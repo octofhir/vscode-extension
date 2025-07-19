@@ -1,143 +1,162 @@
-import * as vscode from 'vscode';
-import { FhirPathResult, ResultsViewState } from '../engine/types';
+import * as vscode from "vscode";
+import type { FhirPathResult, ResultsViewState } from "../engine/types";
 
 /**
  * Provides a webview for displaying FHIRPath evaluation results
  */
 export class ResultsViewProvider implements vscode.WebviewViewProvider {
-    public static readonly viewType = 'fhirpathResults';
-    private _view?: vscode.WebviewView;
+	public static readonly viewType = "fhirpathResults";
+	private _view?: vscode.WebviewView;
 
-    constructor(private readonly _extensionUri: vscode.Uri) {}
+	constructor(private readonly _extensionUri: vscode.Uri) {}
 
-    public resolveWebviewView(
-        webviewView: vscode.WebviewView,
-        context: vscode.WebviewViewResolveContext,
-        _token: vscode.CancellationToken,
-    ) {
-        this._view = webviewView;
+	public resolveWebviewView(
+		webviewView: vscode.WebviewView,
+		context: vscode.WebviewViewResolveContext,
+		_token: vscode.CancellationToken,
+	) {
+		this._view = webviewView;
 
-        webviewView.webview.options = {
-            // Allow scripts in the webview
-            enableScripts: true,
-            localResourceRoots: [this._extensionUri]
-        };
+		webviewView.webview.options = {
+			// Allow scripts in the webview
+			enableScripts: true,
+			localResourceRoots: [this._extensionUri],
+		};
 
-        webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
+		webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
-        // Handle messages from the webview
-        webviewView.webview.onDidReceiveMessage(
-            message => {
-                switch (message.type) {
-                    case 'copy':
-                        vscode.env.clipboard.writeText(message.text);
-                        vscode.window.showInformationMessage('Copied to clipboard');
-                        break;
-                    case 'export':
-                        this.exportResults(message.data);
-                        break;
-                }
-            },
-            undefined,
-            []
-        );
-    }
+		// Handle messages from the webview
+		webviewView.webview.onDidReceiveMessage(
+			(message) => {
+				switch (message.type) {
+					case "copy":
+						vscode.env.clipboard.writeText(message.text);
+						vscode.window.showInformationMessage("Copied to clipboard");
+						break;
+					case "export":
+						this.exportResults(message.data);
+						break;
+				}
+			},
+			undefined,
+			[],
+		);
+	}
 
-    public showResults(expression: string, result: FhirPathResult, executionTime?: number) {
-        if (this._view) {
-            const state: ResultsViewState = {
-                expression,
-                result,
-                timestamp: Date.now(),
-                executionTime
-            };
+	public showResults(
+		expression: string,
+		result: FhirPathResult,
+		executionTime?: number,
+	) {
+		if (this._view) {
+			const state: ResultsViewState = {
+				expression,
+				result,
+				timestamp: Date.now(),
+				executionTime,
+			};
 
-            this._view.webview.postMessage({
-                type: 'showResults',
-                state
-            });
+			this._view.webview.postMessage({
+				type: "showResults",
+				state,
+			});
 
-            // Show the view
-            this._view.show?.(true);
-        }
-    }
+			// Show the view
+			this._view.show?.(true);
+		}
+	}
 
-    public clearResults() {
-        if (this._view) {
-            this._view.webview.postMessage({
-                type: 'clearResults'
-            });
-        }
-    }
+	public clearResults() {
+		if (this._view) {
+			this._view.webview.postMessage({
+				type: "clearResults",
+			});
+		}
+	}
 
-    private async exportResults(data: any) {
-        const options: vscode.SaveDialogOptions = {
-            saveLabel: 'Export Results',
-            filters: {
-                'JSON': ['json'],
-                'CSV': ['csv'],
-                'Text': ['txt']
-            }
-        };
+	private async exportResults(data: any) {
+		const options: vscode.SaveDialogOptions = {
+			saveLabel: "Export Results",
+			filters: {
+				JSON: ["json"],
+				CSV: ["csv"],
+				Text: ["txt"],
+			},
+		};
 
-        const fileUri = await vscode.window.showSaveDialog(options);
-        if (fileUri) {
-            let content: string;
-            const extension = fileUri.path.split('.').pop()?.toLowerCase();
+		const fileUri = await vscode.window.showSaveDialog(options);
+		if (fileUri) {
+			let content: string;
+			const extension = fileUri.path.split(".").pop()?.toLowerCase();
 
-            switch (extension) {
-                case 'json':
-                    content = JSON.stringify(data, null, 2);
-                    break;
-                case 'csv':
-                    content = this.convertToCSV(data);
-                    break;
-                default:
-                    content = this.convertToText(data);
-                    break;
-            }
+			switch (extension) {
+				case "json":
+					content = JSON.stringify(data, null, 2);
+					break;
+				case "csv":
+					content = this.convertToCSV(data);
+					break;
+				default:
+					content = this.convertToText(data);
+					break;
+			}
 
-            await vscode.workspace.fs.writeFile(fileUri, Buffer.from(content, 'utf8'));
-            vscode.window.showInformationMessage(`Results exported to ${fileUri.fsPath}`);
-        }
-    }
+			await vscode.workspace.fs.writeFile(
+				fileUri,
+				Buffer.from(content, "utf8"),
+			);
+			vscode.window.showInformationMessage(
+				`Results exported to ${fileUri.fsPath}`,
+			);
+		}
+	}
 
-    private convertToCSV(data: any): string {
-        if (Array.isArray(data)) {
-            if (data.length === 0) return '';
-            
-            const headers = Object.keys(data[0]);
-            const csvRows = [headers.join(',')];
-            
-            for (const row of data) {
-                const values = headers.map(header => {
-                    const value = row[header];
-                    return typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value;
-                });
-                csvRows.push(values.join(','));
-            }
-            
-            return csvRows.join('\n');
-        } else {
-            return `"Key","Value"\n"Result","${JSON.stringify(data).replace(/"/g, '""')}"`;
-        }
-    }
+	private convertToCSV(data: any): string {
+		if (Array.isArray(data)) {
+			if (data.length === 0) return "";
 
-    private convertToText(data: any): string {
-        return JSON.stringify(data, null, 2);
-    }
+			const headers = Object.keys(data[0]);
+			const csvRows = [headers.join(",")];
 
-    private _getHtmlForWebview(webview: vscode.Webview) {
-        // Get the local path to main script run in the webview, then convert it to a uri we can use in the webview.
-        const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'resultsView.js'));
-        const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css'));
-        const styleVSCodeUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'vscode.css'));
-        const styleMainUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'resultsView.css'));
+			for (const row of data) {
+				const values = headers.map((header) => {
+					const value = row[header];
+					return typeof value === "string"
+						? `"${value.replace(/"/g, '""')}"`
+						: value;
+				});
+				csvRows.push(values.join(","));
+			}
 
-        // Use a nonce to only allow a specific script to be run.
-        const nonce = getNonce();
+			return csvRows.join("\n");
+		} else {
+			return `"Key","Value"\n"Result","${JSON.stringify(data).replace(/"/g, '""')}"`;
+		}
+	}
 
-        return `<!DOCTYPE html>
+	private convertToText(data: any): string {
+		return JSON.stringify(data, null, 2);
+	}
+
+	private _getHtmlForWebview(webview: vscode.Webview) {
+		// Get the local path to main script run in the webview, then convert it to a uri we can use in the webview.
+		const scriptUri = webview.asWebviewUri(
+			vscode.Uri.joinPath(this._extensionUri, "media", "resultsView.js"),
+		);
+		const styleResetUri = webview.asWebviewUri(
+			vscode.Uri.joinPath(this._extensionUri, "media", "reset.css"),
+		);
+		const styleVSCodeUri = webview.asWebviewUri(
+			vscode.Uri.joinPath(this._extensionUri, "media", "vscode.css"),
+		);
+		const styleMainUri = webview.asWebviewUri(
+			vscode.Uri.joinPath(this._extensionUri, "media", "resultsView.css"),
+		);
+
+		// Use a nonce to only allow a specific script to be run.
+		const nonce = getNonce();
+
+		return `<!DOCTYPE html>
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
@@ -205,14 +224,15 @@ export class ResultsViewProvider implements vscode.WebviewViewProvider {
                 <script nonce="${nonce}" src="${scriptUri}"></script>
             </body>
             </html>`;
-    }
+	}
 }
 
 function getNonce() {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 32; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
+	let text = "";
+	const possible =
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	for (let i = 0; i < 32; i++) {
+		text += possible.charAt(Math.floor(Math.random() * possible.length));
+	}
+	return text;
 }
