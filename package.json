@@ -2,7 +2,7 @@
   "name": "fhirpath-extension",
   "displayName": "OctoFHIR FHIRPath",
   "description": "Comprehensive support for FHIRPath expressions with syntax highlighting, validation, and evaluation",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "octofhir",
   "icon": "media/octofhir.png",
   "repository": {
