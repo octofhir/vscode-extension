@@ -1,0 +1,177 @@
+/* VSCode Base Styles for Webviews */
+
+:root {
+    /* Ensure codicons are available */
+    font-family: var(--vscode-font-family);
+}
+
+/* Codicon font support */
+.codicon[class*='codicon-'] {
+    font: normal normal normal 16px/1 codicon;
+    display: inline-block;
+    text-decoration: none;
+    text-rendering: auto;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Common VSCode component styles */
+.vscode-button {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 4px 11px;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid transparent;
+    font-family: var(--vscode-font-family);
+    font-size: var(--vscode-font-size);
+    line-height: 18px;
+    white-space: nowrap;
+    user-select: none;
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    cursor: pointer;
+}
+
+.vscode-button:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+.vscode-button:focus {
+    outline: 1px solid var(--vscode-focusBorder);
+    outline-offset: 2px;
+}
+
+.vscode-button.secondary {
+    background-color: var(--vscode-button-secondaryBackground);
+    color: var(--vscode-button-secondaryForeground);
+}
+
+.vscode-button.secondary:hover {
+    background-color: var(--vscode-button-secondaryHoverBackground);
+}
+
+.vscode-input {
+    font-family: var(--vscode-font-family);
+    font-size: var(--vscode-font-size);
+    padding: 4px 6px;
+    color: var(--vscode-input-foreground);
+    background-color: var(--vscode-input-background);
+    border: 1px solid var(--vscode-input-border);
+}
+
+.vscode-input:focus {
+    outline: 1px solid var(--vscode-focusBorder);
+    outline-offset: -1px;
+}
+
+.vscode-input::placeholder {
+    color: var(--vscode-input-placeholderForeground);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: var(--vscode-editor-background);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--vscode-scrollbarSlider-background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--vscode-scrollbarSlider-hoverBackground);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: var(--vscode-scrollbarSlider-activeBackground);
+}
+
+::-webkit-scrollbar-track {
+    background-color: var(--vscode-editor-background);
+}
+
+/* Selection styling */
+::selection {
+    background-color: var(--vscode-editor-selectionBackground);
+}
+
+/* Link styling */
+a {
+    color: var(--vscode-textLink-foreground);
+}
+
+a:hover {
+    color: var(--vscode-textLink-activeForeground);
+}
+
+/* Code styling */
+code {
+    font-family: var(--vscode-editor-font-family);
+    font-size: var(--vscode-editor-font-size);
+    background-color: var(--vscode-textCodeBlock-background);
+    padding: 1px 3px;
+    border-radius: 3px;
+}
+
+pre {
+    font-family: var(--vscode-editor-font-family);
+    font-size: var(--vscode-editor-font-size);
+    background-color: var(--vscode-textCodeBlock-background);
+    padding: 8px 12px;
+    border-radius: 3px;
+    overflow-x: auto;
+}
+
+/* Error styling */
+.error {
+    color: var(--vscode-errorForeground);
+}
+
+.warning {
+    color: var(--vscode-warningForeground);
+}
+
+.info {
+    color: var(--vscode-infoForeground);
+}
+
+/* Disabled state */
+.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Loading state */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .vscode-button {
+        border: 1px solid var(--vscode-contrastBorder);
+    }
+
+    .vscode-input {
+        border: 1px solid var(--vscode-contrastBorder);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

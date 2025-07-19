@@ -1,0 +1,158 @@
+name: Release and Publish Extension
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      pre_release:
+        description: 'Create pre-release'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run linting
+        run: npm run lint || echo "Linting issues found but continuing with build"
+        continue-on-error: true
+
+      - name: Build extension
+        run: npm run compile
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Bump version
+        id: version
+        run: |
+          # Get current version
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $CURRENT_VERSION"
+          
+          # Bump version based on input
+          if [ "${{ github.event.inputs.version_type }}" = "major" ]; then
+            NEW_VERSION=$(npm version major --no-git-tag-version)
+          elif [ "${{ github.event.inputs.version_type }}" = "minor" ]; then
+            NEW_VERSION=$(npm version minor --no-git-tag-version)
+          else
+            NEW_VERSION=$(npm version patch --no-git-tag-version)
+          fi
+          
+          # Remove 'v' prefix from version
+          NEW_VERSION=${NEW_VERSION#v}
+          echo "New version: $NEW_VERSION"
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Package extension
+        run: npx vsce package --no-dependencies
+
+      - name: Commit version bump
+        run: |
+          git add package.json package-lock.json
+          git commit -m "chore: bump version to ${{ steps.version.outputs.version }}"
+          git tag "v${{ steps.version.outputs.version }}"
+
+      - name: Push changes
+        run: |
+          git push origin main
+          git push origin "v${{ steps.version.outputs.version }}"
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: "v${{ steps.version.outputs.version }}"
+          release_name: "Release v${{ steps.version.outputs.version }}"
+          draft: false
+          prerelease: ${{ github.event.inputs.pre_release }}
+          body: |
+            ## Changes in v${{ steps.version.outputs.version }}
+            
+            This release was automatically generated.
+            
+            ### Installation
+            You can install this extension from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=octofhir.fhirpath-extension) or download the VSIX file from this release.
+
+      - name: Upload VSIX to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./fhirpath-extension-${{ steps.version.outputs.version }}.vsix
+          asset_name: fhirpath-extension-${{ steps.version.outputs.version }}.vsix
+          asset_content_type: application/zip
+
+      - name: Publish to VSCode Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: |
+          if [ -z "$VSCE_PAT" ]; then
+            echo "Warning: VSCE_PAT secret not set. Skipping marketplace publication."
+            echo "To publish to VSCode Marketplace, add your Personal Access Token as VSCE_PAT secret."
+            exit 0
+          fi
+          
+          echo "Publishing to VSCode Marketplace..."
+          npx vsce publish --packagePath ./fhirpath-extension-${{ steps.version.outputs.version }}.vsix
+
+      - name: Publish to Open VSX Registry
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+        run: |
+          if [ -z "$OVSX_PAT" ]; then
+            echo "Warning: OVSX_PAT secret not set. Skipping Open VSX publication."
+            echo "To publish to Open VSX Registry, add your Personal Access Token as OVSX_PAT secret."
+            exit 0
+          fi
+          
+          echo "Publishing to Open VSX Registry..."
+          npx ovsx publish ./fhirpath-extension-${{ steps.version.outputs.version }}.vsix --pat $OVSX_PAT
+
+  notify:
+    needs: release
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Notify Success
+        if: needs.release.result == 'success'
+        run: |
+          echo "✅ Extension successfully released and published!"
+          echo "🎉 Version ${{ needs.release.outputs.version }} is now available"
+
+      - name: Notify Failure
+        if: needs.release.result == 'failure'
+        run: |
+          echo "❌ Extension release failed!"
+          echo "Please check the workflow logs for details."

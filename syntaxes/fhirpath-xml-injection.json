@@ -1,0 +1,167 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "FHIRPath Injection for XML",
+  "scopeName": "fhirpath.injection.xml",
+  "injectionSelector": "L:text.xml -comment",
+  "patterns": [
+    {
+      "include": "#fhirpath-xml-attribute"
+    },
+    {
+      "include": "#fhirpath-xml-content"
+    }
+  ],
+  "repository": {
+    "fhirpath-xml-attribute": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.xml",
+          "begin": "(?<=\\s(?:expression|criteria|condition|path|select|where|filter|fhirPath|fhir_path|value)\\s*=\\s*\")(?=.*\")",
+          "end": "(?=\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.xml",
+          "begin": "(?<=\\s(?:expression|criteria|condition|path|select|where|filter|fhirPath|fhir_path|value)\\s*=\\s*')(?=.*')",
+          "end": "(?=')",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.xml",
+          "begin": "(?<=\\s(?:map|check|answerExpression)\\s*=\\s*\")(?=.*\")",
+          "end": "(?=\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.xml",
+          "begin": "(?<=\\s(?:map|check|answerExpression)\\s*=\\s*')(?=.*')",
+          "end": "(?=')",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        }
+      ]
+    },
+    "fhirpath-xml-content": {
+      "patterns": [
+        {
+          "name": "text.xml",
+          "begin": "(?<=<(?:expression|criteria|condition|path|select|where|filter|fhirPath|fhir_path)(?:\\s[^>]*)?>)(?=.*</(?:expression|criteria|condition|path|select|where|filter|fhirPath|fhir_path)>)",
+          "end": "(?=</(?:expression|criteria|condition|path|select|where|filter|fhirPath|fhir_path)>)",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "text.xml",
+          "begin": "(?<=<(?:map|check|answerExpression)(?:\\s[^>]*)?>)(?=.*</(?:map|check|answerExpression)>)",
+          "end": "(?=</(?:map|check|answerExpression)>)",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "text.xml",
+          "begin": "(?<=<constraint(?:\\s[^>]*)?>[^<]*<expression(?:\\s[^>]*)?>)(?=.*</expression>)",
+          "end": "(?=</expression>)",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "text.xml",
+          "begin": "(?<=<searchParameter(?:\\s[^>]*)?>[^<]*<expression(?:\\s[^>]*)?>)(?=.*</expression>)",
+          "end": "(?=</expression>)",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "text.xml",
+          "begin": "(?<=<enableWhen(?:\\s[^>]*)?>[^<]*<answerExpression(?:\\s[^>]*)?>)(?=.*</answerExpression>)",
+          "end": "(?=</answerExpression>)",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "text.xml",
+          "begin": "(?<=<mapping(?:\\s[^>]*)?>[^<]*<map(?:\\s[^>]*)?>)(?=.*</map>)",
+          "end": "(?=</map>)",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "text.xml",
+          "begin": "(?<=<(?:group|population|stratifier)(?:\\s[^>]*)?>[^<]*<criteria(?:\\s[^>]*)?>)(?=.*</criteria>)",
+          "end": "(?=</criteria>)",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "text.xml",
+          "begin": "(?<=<condition(?:\\s[^>]*)?>[^<]*<expression(?:\\s[^>]*)?>)(?=.*</expression>)",
+          "end": "(?=</expression>)",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "text.xml",
+          "begin": "(?<=<(?:source|target)(?:\\s[^>]*)?>[^<]*<check(?:\\s[^>]*)?>)(?=.*</check>)",
+          "end": "(?=</check>)",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

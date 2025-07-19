@@ -1,0 +1,28 @@
+# Source files
+src/**
+tsconfig.json
+webpack.config.js
+
+# Development files
+.vscode/**
+.vscode-test/**
+node_modules/**
+pnpm-lock.yaml
+
+# Build artifacts (keep only the compiled output)
+out/**/*.map
+out/**/*.ts
+
+# Documentation that's not needed in the package
+EXTENSION_PLAN.md
+.gitignore
+
+# Test files
+test/**
+**/*.test.js
+**/*.test.ts
+
+# Misc
+.DS_Store
+*.log
+*.tmp

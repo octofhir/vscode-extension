@@ -1,0 +1,214 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "FHIR Shorthand (FSH)",
+  "scopeName": "source.fsh",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#booleans"
+    },
+    {
+      "include": "#urls"
+    },
+    {
+      "include": "#identifiers"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#punctuation"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.fsh",
+          "begin": "//",
+          "end": "$",
+          "captures": {
+            "0": {
+              "name": "punctuation.definition.comment.fsh"
+            }
+          }
+        },
+        {
+          "name": "comment.block.fsh",
+          "begin": "/\\*",
+          "end": "\\*/",
+          "captures": {
+            "0": {
+              "name": "punctuation.definition.comment.fsh"
+            }
+          }
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.fsh",
+          "match": "\\b(Alias|Profile|Extension|Instance|ValueSet|CodeSystem|RuleSet|Mapping|Logical|Resource)\\b"
+        },
+        {
+          "name": "keyword.other.fsh",
+          "match": "\\b(Parent|Id|Title|Description|Expression|XPath|Severity|Usage|Source|Target|from|only|obeys|contains|named|and|or|codes|where|include|exclude|concept|insert|mixins)\\b"
+        },
+        {
+          "name": "keyword.operator.fsh",
+          "match": "\\b(MS|SU|TU|N|D)\\b"
+        },
+        {
+          "name": "keyword.modifier.fsh",
+          "match": "\\b(exactly|at-most|at-least)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.fsh",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.fsh",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.fsh",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.fsh",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.decimal.fsh",
+          "match": "\\b\\d+\\.\\d+\\b"
+        },
+        {
+          "name": "constant.numeric.integer.fsh",
+          "match": "\\b\\d+\\b"
+        }
+      ]
+    },
+    "booleans": {
+      "patterns": [
+        {
+          "name": "constant.language.boolean.fsh",
+          "match": "\\b(true|false)\\b"
+        }
+      ]
+    },
+    "urls": {
+      "patterns": [
+        {
+          "name": "string.other.link.fsh",
+          "match": "https?://[^\\s]+"
+        },
+        {
+          "name": "string.other.uri.fsh",
+          "match": "urn:[^\\s]+"
+        }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "name": "entity.name.type.fsh",
+          "match": "\\b[A-Z][a-zA-Z0-9_]*\\b"
+        },
+        {
+          "name": "variable.other.fsh",
+          "match": "\\b[a-z][a-zA-Z0-9_]*\\b"
+        },
+        {
+          "name": "variable.other.property.fsh",
+          "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*(?=\\s*[\\[\\.])"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.assignment.fsh",
+          "match": "="
+        },
+        {
+          "name": "keyword.operator.range.fsh",
+          "match": "\\.\\."
+        },
+        {
+          "name": "keyword.operator.path.fsh",
+          "match": "\\."
+        },
+        {
+          "name": "keyword.operator.union.fsh",
+          "match": "\\|"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.section.brackets.begin.fsh",
+          "match": "\\["
+        },
+        {
+          "name": "punctuation.section.brackets.end.fsh",
+          "match": "\\]"
+        },
+        {
+          "name": "punctuation.section.parens.begin.fsh",
+          "match": "\\("
+        },
+        {
+          "name": "punctuation.section.parens.end.fsh",
+          "match": "\\)"
+        },
+        {
+          "name": "punctuation.section.braces.begin.fsh",
+          "match": "\\{"
+        },
+        {
+          "name": "punctuation.section.braces.end.fsh",
+          "match": "\\}"
+        },
+        {
+          "name": "punctuation.separator.comma.fsh",
+          "match": ","
+        },
+        {
+          "name": "punctuation.separator.colon.fsh",
+          "match": ":"
+        },
+        {
+          "name": "punctuation.separator.semicolon.fsh",
+          "match": ";"
+        }
+      ]
+    }
+  }
+}

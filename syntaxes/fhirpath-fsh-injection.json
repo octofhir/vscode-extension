@@ -1,0 +1,215 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "FHIRPath Injection for FSH",
+  "scopeName": "fhirpath.injection.fsh",
+  "injectionSelector": "L:source.fsh -comment",
+  "patterns": [
+    {
+      "include": "#fhirpath-fsh-expression"
+    }
+  ],
+  "repository": {
+    "fhirpath-fsh-expression": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.fsh",
+          "begin": "(?<=\\bobeys\\s+[a-zA-Z0-9_-]+\\s*:\\s*\")(?=.*\")",
+          "end": "(?=\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.fsh",
+          "begin": "(?<=\\bobeys\\s+[a-zA-Z0-9_-]+\\s*:\\s*')(?=.*')",
+          "end": "(?=')",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.unquoted.fsh",
+          "begin": "(?<=\\bobeys\\s+[a-zA-Z0-9_-]+\\s*:\\s*)(?![\"'])",
+          "end": "$",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.fsh",
+          "begin": "(?<=\\bExpression\\s*:\\s*\")(?=.*\")",
+          "end": "(?=\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.fsh",
+          "begin": "(?<=\\bExpression\\s*:\\s*')(?=.*')",
+          "end": "(?=')",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.unquoted.fsh",
+          "begin": "(?<=\\bExpression\\s*:\\s*)(?![\"'])",
+          "end": "$",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.fsh",
+          "begin": "(?<=\\bwhere\\s+\")(?=.*\")",
+          "end": "(?=\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.fsh",
+          "begin": "(?<=\\bwhere\\s+')(?=.*')",
+          "end": "(?=')",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.unquoted.fsh",
+          "begin": "(?<=\\bwhere\\s+)(?![\"'])",
+          "end": "$",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.fsh",
+          "begin": "(?<=\\*\\s+[a-zA-Z0-9_.\\[\\]]+\\s+obeys\\s+[a-zA-Z0-9_-]+\\s*:\\s*\")(?=.*\")",
+          "end": "(?=\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.fsh",
+          "begin": "(?<=\\*\\s+[a-zA-Z0-9_.\\[\\]]+\\s+obeys\\s+[a-zA-Z0-9_-]+\\s*:\\s*')(?=.*')",
+          "end": "(?=')",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.unquoted.fsh",
+          "begin": "(?<=\\*\\s+[a-zA-Z0-9_.\\[\\]]+\\s+obeys\\s+[a-zA-Z0-9_-]+\\s*:\\s*)(?![\"'])",
+          "end": "$",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.fsh",
+          "begin": "(?<=\\bInvariant\\s*:\\s*[a-zA-Z0-9_-]+\\s*\\n\\s*Expression\\s*:\\s*\")(?=.*\")",
+          "end": "(?=\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.fsh",
+          "begin": "(?<=\\bInvariant\\s*:\\s*[a-zA-Z0-9_-]+\\s*\\n\\s*Expression\\s*:\\s*')(?=.*')",
+          "end": "(?=')",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.unquoted.fsh",
+          "begin": "(?<=\\bInvariant\\s*:\\s*[a-zA-Z0-9_-]+\\s*\\n\\s*Expression\\s*:\\s*)(?![\"'])",
+          "end": "$",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.fsh",
+          "begin": "(?<=\\bMapping\\s*:\\s*[a-zA-Z0-9_-]+\\s*\\n(?:[^\\n]*\\n)*\\s*\\*\\s+[a-zA-Z0-9_.\\[\\]]+\\s*->\\s*\")(?=.*\")",
+          "end": "(?=\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.fsh",
+          "begin": "(?<=\\bMapping\\s*:\\s*[a-zA-Z0-9_-]+\\s*\\n(?:[^\\n]*\\n)*\\s*\\*\\s+[a-zA-Z0-9_.\\[\\]]+\\s*->\\s*')(?=.*')",
+          "end": "(?=')",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.unquoted.fsh",
+          "begin": "(?<=\\bMapping\\s*:\\s*[a-zA-Z0-9_-]+\\s*\\n(?:[^\\n]*\\n)*\\s*\\*\\s+[a-zA-Z0-9_.\\[\\]]+\\s*->\\s*)(?![\"'])",
+          "end": "$",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

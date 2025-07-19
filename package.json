@@ -1,0 +1,344 @@
+{
+  "name": "fhirpath-extension",
+  "displayName": "OctoFHIR FHIRPath",
+  "description": "Comprehensive support for FHIRPath expressions with syntax highlighting, validation, and evaluation",
+  "version": "0.1.0",
+  "publisher": "octofhir",
+  "icon": "media/octofhir.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/octofhir/vscode-extension.git"
+  },
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Formatters",
+    "Other"
+  ],
+  "keywords": [
+    "fhirpath",
+    "fhir",
+    "healthcare",
+    "hl7",
+    "expression",
+    "validation"
+  ],
+  "activationEvents": [
+    "onLanguage:fhirpath",
+    "onLanguage:json",
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact",
+    "onLanguage:yaml",
+    "onLanguage:xml",
+    "onLanguage:fsh"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "fhirpath",
+        "aliases": [
+          "FHIRPath",
+          "fhirpath"
+        ],
+        "extensions": [
+          ".fhirpath"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "fhirpath",
+        "scopeName": "source.fhirpath",
+        "path": "./syntaxes/fhirpath.tmLanguage.json"
+      },
+      {
+        "scopeName": "fhirpath.injection.js",
+        "path": "./syntaxes/fhirpath-injection.json",
+        "injectTo": [
+          "source.js",
+          "source.ts",
+          "source.jsx",
+          "source.tsx"
+        ]
+      },
+      {
+        "scopeName": "fhirpath.injection.json",
+        "path": "./syntaxes/fhirpath-json-injection.json",
+        "injectTo": [
+          "source.json"
+        ]
+      },
+      {
+        "scopeName": "fhirpath.injection.yaml",
+        "path": "./syntaxes/fhirpath-yaml-injection.json",
+        "injectTo": [
+          "source.yaml"
+        ]
+      },
+      {
+        "scopeName": "fhirpath.injection.xml",
+        "path": "./syntaxes/fhirpath-xml-injection.json",
+        "injectTo": [
+          "text.xml"
+        ]
+      },
+      {
+        "language": "fsh",
+        "scopeName": "source.fsh",
+        "path": "./syntaxes/fsh.tmLanguage.json"
+      },
+      {
+        "scopeName": "fhirpath.injection.fsh",
+        "path": "./syntaxes/fhirpath-fsh-injection.json",
+        "injectTo": [
+          "source.fsh"
+        ]
+      }
+    ],
+    "commands": [
+      {
+        "command": "fhirpath.evaluateExpression",
+        "title": "Evaluate FHIRPath Expression",
+        "category": "FHIRPath"
+      },
+      {
+        "command": "fhirpath.validateExpression",
+        "title": "Validate FHIRPath Expression",
+        "category": "FHIRPath"
+      },
+      {
+        "command": "fhirpath.showAST",
+        "title": "Show AST",
+        "category": "FHIRPath"
+      },
+      {
+        "command": "fhirpath.formatExpression",
+        "title": "Format FHIRPath Expression",
+        "category": "FHIRPath"
+      },
+      {
+        "command": "fhirpath.setContext",
+        "title": "Set FHIR Resource Context",
+        "category": "FHIRPath"
+      },
+      {
+        "command": "fhirpath.clearCache",
+        "title": "Clear Cache",
+        "category": "FHIRPath"
+      },
+      {
+        "command": "fhirpath.showDocumentation",
+        "title": "Show Documentation",
+        "category": "FHIRPath"
+      },
+      {
+        "command": "fhirpath.showDebugInfo",
+        "title": "Show Debug Information",
+        "category": "FHIRPath"
+      },
+      {
+        "command": "fhirpath.playground.evaluate",
+        "title": "Evaluate Expression",
+        "category": "FHIRPath Playground",
+        "icon": "$(play)"
+      },
+      {
+        "command": "fhirpath.playground.clear",
+        "title": "Clear Playground",
+        "category": "FHIRPath Playground",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "fhirpath.playground.loadExample",
+        "title": "Load Example",
+        "category": "FHIRPath Playground",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "fhirpath.playground.export",
+        "title": "Export Results",
+        "category": "FHIRPath Playground",
+        "icon": "$(export)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "editorLangId == fhirpath",
+          "command": "fhirpath.evaluateExpression",
+          "group": "fhirpath"
+        },
+        {
+          "when": "editorLangId == fhirpath",
+          "command": "fhirpath.validateExpression",
+          "group": "fhirpath"
+        },
+        {
+          "when": "editorLangId == fhirpath",
+          "command": "fhirpath.showAST",
+          "group": "fhirpath"
+        },
+        {
+          "when": "editorLangId == fhirpath",
+          "command": "fhirpath.formatExpression",
+          "group": "fhirpath"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "fhirpath.playground.evaluate",
+          "when": "view == fhirpathPlaygroundView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "fhirpath.playground.clear",
+          "when": "view == fhirpathPlaygroundView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "fhirpath.playground.loadExample",
+          "when": "view == fhirpathPlaygroundView",
+          "group": "navigation@3"
+        },
+        {
+          "command": "fhirpath.playground.export",
+          "when": "view == fhirpathPlaygroundView",
+          "group": "navigation@4"
+        }
+      ]
+    },
+    "views": {
+      "explorer": [
+        {
+          "id": "fhirpathExplorer",
+          "name": "FHIRPath Explorer",
+          "when": "fhirpath:enabled"
+        }
+      ],
+      "fhirpathPlayground": [
+        {
+          "id": "fhirpathPlaygroundView",
+          "name": "Playground",
+          "type": "webview",
+          "when": "true"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "fhirpathPlayground",
+          "title": "FHIRPath Playground",
+          "icon": "$(play)"
+        }
+      ],
+      "panel": [
+        {
+          "id": "fhirpathPanel",
+          "title": "FHIRPath",
+          "icon": "$(symbol-property)"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "FHIRPath",
+      "properties": {
+        "fhirpath.defaultContext": {
+          "type": "string",
+          "default": "",
+          "description": "Default FHIR resource to use for evaluation"
+        },
+        "fhirpath.server.url": {
+          "type": "string",
+          "default": "",
+          "description": "URL to FHIR server for fetching resources"
+        },
+        "fhirpath.server.auth": {
+          "type": "object",
+          "default": {},
+          "description": "Authentication settings for FHIR server"
+        },
+        "fhirpath.formatting.style": {
+          "type": "string",
+          "enum": [
+            "compact",
+            "readable"
+          ],
+          "default": "readable",
+          "description": "Formatting style for FHIRPath expressions"
+        },
+        "fhirpath.evaluation.timeout": {
+          "type": "number",
+          "default": 5000,
+          "description": "Timeout for expression evaluation in milliseconds"
+        },
+        "fhirpath.highlighting.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable syntax highlighting"
+        },
+        "fhirpath.highlighting.fileTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "json",
+            "javascript",
+            "typescript",
+            "javascriptreact",
+            "typescriptreact",
+            "yaml",
+            "xml",
+            "fsh"
+          ],
+          "description": "File types to enable FHIRPath highlighting in"
+        },
+        "fhirpath.validation.liveValidation": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable live validation"
+        },
+        "fhirpath.ast.maxDepth": {
+          "type": "number",
+          "default": 10,
+          "description": "Maximum depth to render in AST visualization"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "webpack --mode production",
+    "watch": "webpack --mode development --watch",
+    "package": "vsce package",
+    "test": "node ./out/test/runTest.js",
+    "lint": "biome check src",
+    "biome": "biome",
+    "pretest": "npm run compile && npm run lint"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.1.2",
+    "@types/node": "^22",
+    "@types/vscode": "^1.74.0",
+    "@vscode/test-electron": "^2.2.0",
+    "@vscode/vsce": "^3.6.0",
+    "ts-loader": "^9.4.1",
+    "typescript": "^5.8.3",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "@octofhir/fhirpath-wasm": "0.1.0",
+    "vscode-languageclient": "^8.0.2",
+    "vscode-languageserver": "^8.0.2",
+    "vscode-languageserver-textdocument": "^1.0.7"
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "FHIRPath Injection for JSON",
+  "scopeName": "fhirpath.injection.json",
+  "injectionSelector": "L:source.json -comment",
+  "patterns": [
+    {
+      "include": "#fhirpath-json-string"
+    }
+  ],
+  "repository": {
+    "fhirpath-json-string": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.json",
+          "begin": "(?<=\\\"(?:expression|criteria|condition|path|select|where|filter|fhirPath|fhir_path)\\\"\\s*:\\s*\\\")(?=.*\\\")",
+          "end": "(?=\\\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.json",
+          "begin": "(?<=\\\"(?:invariant|constraint)\\\"\\s*:\\s*\\{[^}]*\\\"expression\\\"\\s*:\\s*\\\")(?=.*\\\")",
+          "end": "(?=\\\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.json",
+          "begin": "(?<=\\\"(?:searchParam|searchParameter)\\\"\\s*:\\s*\\{[^}]*\\\"expression\\\"\\s*:\\s*\\\")(?=.*\\\")",
+          "end": "(?=\\\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.json",
+          "begin": "(?<=\\\"(?:element|differential|snapshot)\\\"\\s*:\\s*\\{[^}]*\\\"constraint\\\"\\s*:\\s*\\[[^\\]]*\\{[^}]*\\\"expression\\\"\\s*:\\s*\\\")(?=.*\\\")",
+          "end": "(?=\\\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.json",
+          "begin": "(?<=\\\"(?:mapping)\\\"\\s*:\\s*\\[[^\\]]*\\{[^}]*\\\"map\\\"\\s*:\\s*\\\")(?=.*\\\")",
+          "end": "(?=\\\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.json",
+          "begin": "(?<=\\\"(?:questionnaire|item)\\\"\\s*:\\s*\\{[^}]*\\\"enableWhen\\\"\\s*:\\s*\\[[^\\]]*\\{[^}]*\\\"answerExpression\\\"\\s*:\\s*\\\")(?=.*\\\")",
+          "end": "(?=\\\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.json",
+          "begin": "(?<=\\\"(?:library|measure|planDefinition)\\\"\\s*:\\s*\\{[^}]*\\\"expression\\\"\\s*:\\s*\\\")(?=.*\\\")",
+          "end": "(?=\\\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.json",
+          "begin": "(?<=\\\"(?:group|population|stratifier)\\\"\\s*:\\s*\\{[^}]*\\\"criteria\\\"\\s*:\\s*\\\")(?=.*\\\")",
+          "end": "(?=\\\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.json",
+          "begin": "(?<=\\\"(?:action|trigger)\\\"\\s*:\\s*\\{[^}]*\\\"condition\\\"\\s*:\\s*\\{[^}]*\\\"expression\\\"\\s*:\\s*\\\")(?=.*\\\")",
+          "end": "(?=\\\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.json",
+          "begin": "(?<=\\\"(?:transform|source|target)\\\"\\s*:\\s*\\{[^}]*\\\"check\\\"\\s*:\\s*\\\")(?=.*\\\")",
+          "end": "(?=\\\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.json",
+          "begin": "(?<=\\\"(?:variable|parameter)\\\"\\s*:\\s*\\{[^}]*\\\"defaultValue\\\"\\s*:\\s*\\{[^}]*\\\"expression\\\"\\s*:\\s*\\\")(?=.*\\\")",
+          "end": "(?=\\\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,448 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "FHIRPath Injection for JavaScript/TypeScript",
+  "scopeName": "fhirpath.injection.js",
+  "injectionSelector": "L:source.js -comment -string, L:source.ts -comment -string, L:source.jsx -comment -string, L:source.tsx -comment -string",
+  "patterns": [
+    {
+      "include": "#fhirpath-string-literal"
+    },
+    {
+      "include": "#fhirpath-template-literal"
+    },
+    {
+      "include": "#fhirpath-jsx-attributes"
+    },
+    {
+      "include": "#fhirpath-react-hooks"
+    },
+    {
+      "include": "#fhirpath-object-properties"
+    },
+    {
+      "include": "#fhirpath-typescript-types"
+    }
+  ],
+  "repository": {
+    "fhirpath-string-literal": {
+      "patterns": [
+        {
+          "name": "string.quoted.single.js",
+          "begin": "(?i)(?:fhirpath|fhir_path|evaluate|expression)\\s*\\(\\s*['\"]",
+          "end": "['\"]",
+          "beginCaptures": {
+            "0": {
+              "name": "string.quoted.single.js"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.quoted.single.js"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.js",
+          "begin": "(?i)(?:fhirpath|fhir_path|evaluate|expression)\\s*\\(\\s*\"",
+          "end": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "string.quoted.double.js"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.quoted.double.js"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.js",
+          "begin": "(?<=\\bexpression\\s*[:=]\\s*)['\"]",
+          "end": "['\"]",
+          "beginCaptures": {
+            "0": {
+              "name": "string.quoted.single.js"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.quoted.single.js"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.js",
+          "begin": "(?<=\\bexpression\\s*[:=]\\s*)\"",
+          "end": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "string.quoted.double.js"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.quoted.double.js"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        }
+      ]
+    },
+    "fhirpath-template-literal": {
+      "patterns": [
+        {
+          "name": "string.template.js",
+          "begin": "(?i)(?:fhirpath|fhir_path|evaluate|expression)\\s*`",
+          "end": "`",
+          "beginCaptures": {
+            "0": {
+              "name": "string.template.js"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.template.js"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "#template-substitution"
+            },
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.template.js",
+          "begin": "(?<=\\bexpression\\s*[:=]\\s*)`",
+          "end": "`",
+          "beginCaptures": {
+            "0": {
+              "name": "string.template.js"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.template.js"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "#template-substitution"
+            },
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        }
+      ]
+    },
+    "template-substitution": {
+      "patterns": [
+        {
+          "name": "meta.template.expression.js",
+          "begin": "\\$\\{",
+          "end": "\\}",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.template-expression.begin.js"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.template-expression.end.js"
+            }
+          },
+          "patterns": [
+            {
+              "include": "source.js"
+            },
+            {
+              "include": "source.ts"
+            }
+          ]
+        }
+      ]
+    },
+    "fhirpath-jsx-attributes": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.jsx",
+          "begin": "(?i)(?:expression|path|query|rule|criteria|condition|select|where|filter)\\s*=\\s*\"",
+          "end": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "string.quoted.double.jsx"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.quoted.double.jsx"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.jsx",
+          "begin": "(?i)(?:expression|path|query|rule|criteria|condition|select|where|filter)\\s*=\\s*'",
+          "end": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "string.quoted.single.jsx"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.quoted.single.jsx"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "meta.jsx.expression",
+          "begin": "(?i)(?:expression|path|query|rule|criteria|condition|select|where|filter)\\s*=\\s*\\{\\s*['\"`]",
+          "end": "['\"`]\\s*\\}",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.jsx.expression"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "meta.jsx.expression"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        }
+      ]
+    },
+    "fhirpath-react-hooks": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.js",
+          "begin": "(?i)(?:useFHIRPath|useFhirPath|useQuery|useExpression|useValidation)\\s*\\(\\s*\"",
+          "end": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "string.quoted.double.js"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.quoted.double.js"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.js",
+          "begin": "(?i)(?:useFHIRPath|useFhirPath|useQuery|useExpression|useValidation)\\s*\\(\\s*'",
+          "end": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "string.quoted.single.js"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.quoted.single.js"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.template.js",
+          "begin": "(?i)(?:useFHIRPath|useFhirPath|useQuery|useExpression|useValidation)\\s*\\(\\s*`",
+          "end": "`",
+          "beginCaptures": {
+            "0": {
+              "name": "string.template.js"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.template.js"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "#template-substitution"
+            },
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        }
+      ]
+    },
+    "fhirpath-object-properties": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.js",
+          "begin": "(?i)(?:expression|path|query|rule|criteria|condition|select|where|filter|expr|fhirpath)\\s*:\\s*\"",
+          "end": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "string.quoted.double.js"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.quoted.double.js"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.js",
+          "begin": "(?i)(?:expression|path|query|rule|criteria|condition|select|where|filter|expr|fhirpath)\\s*:\\s*'",
+          "end": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "string.quoted.single.js"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.quoted.single.js"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.template.js",
+          "begin": "(?i)(?:expression|path|query|rule|criteria|condition|select|where|filter|expr|fhirpath)\\s*:\\s*`",
+          "end": "`",
+          "beginCaptures": {
+            "0": {
+              "name": "string.template.js"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.template.js"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "#template-substitution"
+            },
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        }
+      ]
+    },
+    "fhirpath-typescript-types": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.ts",
+          "begin": "(?i)(?:expression|path|query|rule|criteria|condition|select|where|filter)\\s*:\\s*\"",
+          "end": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "string.quoted.double.ts"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.quoted.double.ts"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.ts",
+          "begin": "(?i)(?:expression|path|query|rule|criteria|condition|select|where|filter)\\s*:\\s*'",
+          "end": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "string.quoted.single.ts"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.quoted.single.ts"
+            }
+          },
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

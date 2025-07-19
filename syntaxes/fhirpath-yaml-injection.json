@@ -1,0 +1,160 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "FHIRPath Injection for YAML",
+  "scopeName": "fhirpath.injection.yaml",
+  "injectionSelector": "L:source.yaml -comment",
+  "patterns": [
+    {
+      "include": "#fhirpath-yaml-string"
+    }
+  ],
+  "repository": {
+    "fhirpath-yaml-string": {
+      "patterns": [
+        {
+          "name": "string.quoted.single.yaml",
+          "begin": "(?<=^\\s*(?:expression|criteria|condition|path|select|where|filter|fhirPath|fhir_path)\\s*:\\s*['\"])(?=.*['\"])",
+          "end": "(?=['\"])",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.unquoted.yaml",
+          "begin": "(?<=^\\s*(?:expression|criteria|condition|path|select|where|filter|fhirPath|fhir_path)\\s*:\\s*)(?!['\"])",
+          "end": "$",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.yaml",
+          "begin": "(?<=^\\s*(?:map)\\s*:\\s*['\"])(?=.*['\"])",
+          "end": "(?=['\"])",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.unquoted.yaml",
+          "begin": "(?<=^\\s*(?:map)\\s*:\\s*)(?!['\"])",
+          "end": "$",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.yaml",
+          "begin": "(?<=^\\s*(?:check)\\s*:\\s*['\"])(?=.*['\"])",
+          "end": "(?=['\"])",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.unquoted.yaml",
+          "begin": "(?<=^\\s*(?:check)\\s*:\\s*)(?!['\"])",
+          "end": "$",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.yaml",
+          "begin": "(?<=^\\s*(?:answerExpression)\\s*:\\s*['\"])(?=.*['\"])",
+          "end": "(?=['\"])",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.unquoted.yaml",
+          "begin": "(?<=^\\s*(?:answerExpression)\\s*:\\s*)(?!['\"])",
+          "end": "$",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.yaml",
+          "begin": "(?<=^\\s*-\\s*(?:expression|criteria|condition|path|select|where|filter)\\s*:\\s*['\"])(?=.*['\"])",
+          "end": "(?=['\"])",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.unquoted.yaml",
+          "begin": "(?<=^\\s*-\\s*(?:expression|criteria|condition|path|select|where|filter)\\s*:\\s*)(?!['\"])",
+          "end": "$",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.yaml",
+          "begin": "(?<=^\\s*(?:expression|criteria|condition|path|select|where|filter|fhirPath|fhir_path)\\s*:\\s*\")(?=.*\")",
+          "end": "(?=\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.yaml",
+          "begin": "(?<=^\\s*(?:map|check|answerExpression)\\s*:\\s*\")(?=.*\")",
+          "end": "(?=\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.yaml",
+          "begin": "(?<=^\\s*-\\s*(?:expression|criteria|condition|path|select|where|filter)\\s*:\\s*\")(?=.*\")",
+          "end": "(?=\")",
+          "contentName": "meta.embedded.block.fhirpath",
+          "patterns": [
+            {
+              "include": "source.fhirpath"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
